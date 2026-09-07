@@ -123,11 +123,24 @@
         gap: 18px;
       }
       .brand {
+        display: flex;
+        align-items: center;
+        gap: 9px;
         font-family: var(--font-heading);
         font-weight: 800;
         letter-spacing: 0.055em;
         color: var(--primary);
         font-size: 1.05rem;
+      }
+      .brand-photo {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        object-fit: cover;
+        object-position: center 31%;
+        flex: none;
+        border: 2px solid var(--primary);
+        box-shadow: 0 2px 8px rgba(13, 95, 168, 0.25);
       }
       .navlinks {
         display: flex;
@@ -728,6 +741,10 @@
         .brand {
           font-size: 0.9rem;
         }
+        .brand-photo {
+          width: 26px;
+          height: 26px;
+        }
         .hero {
           padding: 0 12px;
           margin-top: 12px;
@@ -969,7 +986,10 @@
     <header class="topbar">
       <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
       <nav class="nav" aria-label="Navigation principale">
-        <a class="brand" href="#accueil">MOURAD BOUBATA</a>
+        <a class="brand" href="#accueil"
+          ><img class="brand-photo" src="./mourad.png" alt="" />MOURAD
+          BOUBATA</a
+        >
         <div class="navlinks">
           <a href="#profil">Profil</a><a href="#competences">Compétences</a
           ><a href="#experience">Expériences</a>
