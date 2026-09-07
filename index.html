@@ -8,6 +8,24 @@
       content="CV de Mourad Boubata — Technicien informatique de proximité, candidature en alternance."
     />
     <title>Mourad Boubata — Technicien informatique de proximité</title>
+    <meta property="og:title" content="Mourad Boubata — Technicien informatique de proximité" />
+    <meta
+      property="og:description"
+      content="Ingénieur en reconversion vers le support informatique de proximité — candidature en alternance."
+    />
+    <meta property="og:image" content="./mourad.png" />
+    <meta property="og:type" content="profile" />
+    <meta name="theme-color" content="#0d5fa8" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%231d91dc'/%3E%3Cstop offset='1' stop-color='%23063d70'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='32' fill='url(%23g)'/%3E%3Ctext x='32' y='42' font-family='Arial, sans-serif' font-weight='700' font-size='26' fill='white' text-anchor='middle'%3EMB%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700;900&display=swap"
+      rel="stylesheet"
+    />
     <style>
       :root {
         --bg: #f3f8fc;
@@ -22,6 +40,9 @@
         --nav: #fff;
         --shadow: 0 14px 38px rgba(18, 74, 120, 0.1);
         --radius: 20px;
+        --font-heading:
+          Sora, Inter, system-ui, -apple-system, BlinkMacSystemFont,
+          sans-serif;
       }
       [data-theme="dark"] {
         --bg: #0b141d;
@@ -76,6 +97,21 @@
         backdrop-filter: blur(14px);
         border-bottom: 1px solid var(--line);
       }
+      .scroll-progress {
+        position: absolute;
+        left: 0;
+        bottom: -1px;
+        height: 2px;
+        width: 0%;
+        background: linear-gradient(90deg, var(--primary), var(--accent));
+        transition: width 0.1s linear;
+      }
+      a:focus-visible,
+      button:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+        border-radius: 8px;
+      }
       .nav {
         position: relative;
         max-width: 1240px;
@@ -87,7 +123,8 @@
         gap: 18px;
       }
       .brand {
-        font-weight: 900;
+        font-family: var(--font-heading);
+        font-weight: 800;
         letter-spacing: 0.055em;
         color: var(--primary);
         font-size: 1.05rem;
@@ -169,6 +206,7 @@
         top: -180px;
         background: rgba(80, 194, 239, 0.14);
         border: 1px solid rgba(255, 255, 255, 0.07);
+        animation: halo-pulse 7s ease-in-out infinite;
       }
       .hero-card:after {
         content: "";
@@ -179,6 +217,18 @@
         right: 95px;
         bottom: -160px;
         background: rgba(14, 166, 225, 0.1);
+        animation: halo-pulse 7s ease-in-out infinite -3.2s;
+      }
+      @keyframes halo-pulse {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.06);
+          opacity: 0.75;
+        }
       }
       .hero-content {
         position: relative;
@@ -200,10 +250,23 @@
         opacity: 0.9;
       }
       h1 {
+        font-family: var(--font-heading);
         font-size: clamp(2.7rem, 5vw, 4.6rem);
         line-height: 0.98;
         margin: 13px 0 12px;
-        letter-spacing: -0.035em;
+        letter-spacing: -0.03em;
+        font-weight: 700;
+        animation: rise 0.7s ease both;
+      }
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
       }
       .hero-card .subtitle {
         font-size: clamp(1.05rem, 2vw, 1.35rem);
@@ -300,10 +363,11 @@
         align-items: center;
         gap: 13px;
         margin: 0 0 20px;
-        font-size: 1.55rem;
+        font-family: var(--font-heading);
+        font-size: 1.4rem;
         line-height: 1.1;
         color: var(--text);
-        font-weight: 850;
+        font-weight: 700;
       }
       .section-title .section-icon {
         width: 46px;
@@ -313,8 +377,40 @@
         place-items: center;
         flex: none;
         color: #fff;
-        background: linear-gradient(145deg, #1d91dc, #075da6);
+        background: linear-gradient(
+          145deg,
+          var(--icon-c1, #1d91dc),
+          var(--icon-c2, #075da6)
+        );
         box-shadow: 0 6px 16px rgba(13, 95, 168, 0.22);
+      }
+      #profil .section-icon {
+        --icon-c1: #1d91dc;
+        --icon-c2: #075da6;
+      }
+      #competences .section-icon {
+        --icon-c1: #16bfe8;
+        --icon-c2: #0a7fa3;
+      }
+      #experience .section-icon {
+        --icon-c1: #3d7ce0;
+        --icon-c2: #1c3fa0;
+      }
+      #atouts .section-icon {
+        --icon-c1: #7c6ff0;
+        --icon-c2: #3f3aa6;
+      }
+      #formation .section-icon {
+        --icon-c1: #1fb0a3;
+        --icon-c2: #0b6e6b;
+      }
+      #outils .section-icon {
+        --icon-c1: #4f8ff0;
+        --icon-c2: #1c4fb0;
+      }
+      #langues .section-icon {
+        --icon-c1: #e08a3d;
+        --icon-c2: #b3591c;
       }
       .section-title .section-icon svg {
         width: 23px;
@@ -407,6 +503,30 @@
           0 0 0 4px var(--surface),
           0 0 0 5px rgba(22, 191, 232, 0.18);
       }
+      .item-head {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin: 4px 0 3px;
+      }
+      .item-icon {
+        width: 26px;
+        height: 26px;
+        border-radius: 8px;
+        display: grid;
+        place-items: center;
+        flex: none;
+        color: var(--primary);
+        background: var(--surface2);
+        border: 1px solid var(--line);
+      }
+      .item-icon svg {
+        width: 14px;
+        height: 14px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+      }
       .date {
         font-size: 0.76rem;
         font-weight: 900;
@@ -415,7 +535,7 @@
         letter-spacing: 0.07em;
       }
       .item h3 {
-        margin: 4px 0 3px;
+        margin: 0;
         font-size: 1rem;
         color: var(--text);
       }
@@ -796,6 +916,15 @@
         .item h3 {
           font-size: 8.7pt;
         }
+        .item-icon {
+          width: 17px;
+          height: 17px;
+          border-radius: 5px;
+        }
+        .item-icon svg {
+          width: 9px;
+          height: 9px;
+        }
         .tags {
           gap: 4px;
         }
@@ -828,11 +957,17 @@
         .tool {
           transition: none;
         }
+        .hero-card:before,
+        .hero-card:after,
+        h1 {
+          animation: none !important;
+        }
       }
     </style>
   </head>
   <body>
     <header class="topbar">
+      <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
       <nav class="nav" aria-label="Navigation principale">
         <a class="brand" href="#accueil">MOURAD BOUBATA</a>
         <div class="navlinks">
@@ -859,20 +994,14 @@
             <svg viewBox="0 0 24 24">
               <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z" />
               <path d="M18 2v4M16 4h4" />
-              <circle
-                cx="19.5"
-                cy="9.5"
-                r="1"
-                fill="currentColor"
-                stroke="none"
-              />
+              <circle cx="19.5" cy="9.5" r="1" fill="currentColor" stroke="none" />
             </svg>
           </button>
           <button
             class="tool"
             onclick="window.print()"
-            aria-label="Imprimer le CV"
-            title="Imprimer le CV"
+            aria-label="Imprimer ou enregistrer en PDF"
+            title="Imprimer / Enregistrer en PDF"
           >
             <svg viewBox="0 0 24 24">
               <path
@@ -1100,7 +1229,14 @@
             <div class="timeline">
               <div class="item">
                 <div class="date">2011 – 2024</div>
-                <h3>Commerçant indépendant – Nancy / Metz</h3>
+                <div class="item-head">
+                  <span class="item-icon"
+                    ><svg viewBox="0 0 24 24">
+                      <path d="M3 9l1-5h16l1 5" />
+                      <path d="M4 9v10h16V9M9 21v-6h6v6" /></svg
+                  ></span>
+                  <h3>Commerçant indépendant – Nancy / Metz</h3>
+                </div>
                 <p>
                   Activité autonome en contact quotidien avec le public. Gestion
                   de l’activité, déplacements, logistique, relation client,
@@ -1109,7 +1245,19 @@
               </div>
               <div class="item">
                 <div class="date">2008 – 2011</div>
-                <h3>Gérant de restaurant rapide – Nancy</h3>
+                <div class="item-head">
+                  <span class="item-icon"
+                    ><svg viewBox="0 0 24 24">
+                      <path
+                        d="M3 2v7c0 1.1.9 2 2 2h1v11h2V11h1c1.1 0 2-.9 2-2V2"
+                      />
+                      <path d="M16 2v20" />
+                      <path
+                        d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3z"
+                      /></svg
+                  ></span>
+                  <h3>Gérant de restaurant rapide – Nancy</h3>
+                </div>
                 <p>
                   Gestion quotidienne du point de vente : accueil des clients,
                   commandes, caisse, organisation, planification, encadrement
@@ -1118,10 +1266,18 @@
               </div>
               <div class="item">
                 <div class="date">2005 – 2006</div>
-                <h3>
-                  Technicien / Ingénieur environnement – Société Algérienne du
-                  Kaolin – Algérie
-                </h3>
+                <div class="item-head">
+                  <span class="item-icon"
+                    ><svg viewBox="0 0 24 24">
+                      <path d="M9 2v6L4 19a2 2 0 0 0 2 3h12a2 2 0 0 0 2-3l-5-11V2" />
+                      <path d="M9 2h6" />
+                      <path d="M6 15h12" /></svg
+                  ></span>
+                  <h3>
+                    Technicien / Ingénieur environnement – Société Algérienne
+                    du Kaolin – Algérie
+                  </h3>
+                </div>
                 <p>
                   Préparation et suivi d’échantillons environnementaux,
                   participation à des campagnes de mesures et rédaction de
@@ -1130,10 +1286,18 @@
               </div>
               <div class="item">
                 <div class="date">2004 – 2005</div>
-                <h3>
-                  Assistant technicien – Laboratoire CERPA, Université Nancy 2 –
-                  Nancy
-                </h3>
+                <div class="item-head">
+                  <span class="item-icon"
+                    ><svg viewBox="0 0 24 24">
+                      <path d="M9 2v6L4 19a2 2 0 0 0 2 3h12a2 2 0 0 0 2-3l-5-11V2" />
+                      <path d="M9 2h6" />
+                      <path d="M6 15h12" /></svg
+                  ></span>
+                  <h3>
+                    Assistant technicien – Laboratoire CERPA, Université Nancy
+                    2 – Nancy
+                  </h3>
+                </div>
                 <p>
                   Travaux pratiques sur les eaux usées, protocoles de mesure,
                   manipulation et échantillonnage.
@@ -1141,9 +1305,17 @@
               </div>
               <div class="item">
                 <div class="date">1999 – 2001</div>
-                <h3>
-                  Ingénieur hydraulique / Chef de projet – SOTHYDE – Algérie
-                </h3>
+                <div class="item-head">
+                  <span class="item-icon"
+                    ><svg viewBox="0 0 24 24">
+                      <path
+                        d="M12 3s6 6.5 6 11a6 6 0 1 1-12 0c0-4.5 6-11 6-11z"
+                      /></svg
+                  ></span>
+                  <h3>
+                    Ingénieur hydraulique / Chef de projet – SOTHYDE – Algérie
+                  </h3>
+                </div>
                 <p>
                   Études techniques en eau potable et assainissement, lecture de
                   plans, dimensionnement et suivi d’exécution.
@@ -1195,7 +1367,7 @@
             </div>
           </article>
 
-          <article class="card reveal">
+          <article class="card reveal" id="outils">
             <h2 class="section-title">
               <span class="section-icon"
                 ><svg viewBox="0 0 24 24">
@@ -1273,7 +1445,7 @@
             </div>
           </article>
 
-          <article class="card reveal">
+          <article class="card reveal" id="langues">
             <h2 class="section-title">
               <span class="section-icon"
                 ><svg viewBox="0 0 24 24">
@@ -1309,6 +1481,18 @@
     </footer>
 
     <script>
+      const scrollProgress = document.getElementById("scrollProgress");
+      function updateScrollProgress() {
+        const h = document.documentElement;
+        const scrolled = h.scrollTop;
+        const max = h.scrollHeight - h.clientHeight;
+        scrollProgress.style.width = (max > 0 ? (scrolled / max) * 100 : 0) + "%";
+      }
+      document.addEventListener("scroll", updateScrollProgress, {
+        passive: true,
+      });
+      updateScrollProgress();
+
       const root = document.documentElement;
       const themeBtn = document.getElementById("themeBtn");
       const saved = localStorage.getItem("cv-theme");
