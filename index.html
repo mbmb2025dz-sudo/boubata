@@ -194,6 +194,19 @@
         stroke: currentColor;
         stroke-width: 2;
       }
+
+      .pdf-btn {
+        width: auto;
+        min-width: 108px;
+        padding: 0 13px;
+        gap: 8px;
+        font-weight: 750;
+      }
+
+      .pdf-label {
+        white-space: nowrap;
+        font-size: 0.84rem;
+      }
       .hero {
         max-width: 1240px;
         margin: 16px auto 0;
@@ -668,6 +681,16 @@
           order: 3;
           margin-left: auto;
         }
+
+        .pdf-btn {
+          min-width: 42px;
+          width: 42px;
+          padding: 0;
+        }
+
+        .pdf-label {
+          display: none;
+        }
         .mobile-menu {
           position: absolute;
           left: 0;
@@ -801,7 +824,7 @@
         }
       }
       @page {
-        size: A4;
+        size: A4 portrait;
         margin: 9mm;
       }
       @media print {
@@ -809,6 +832,8 @@
           background: #fff;
           font-size: 9.2pt;
           line-height: 1.4;
+          print-color-adjust: exact;
+          -webkit-print-color-adjust: exact;
         }
         .topbar,
         .print-note,
@@ -981,6 +1006,7 @@
         }
       }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   </head>
   <body>
     <header class="topbar">
@@ -1018,17 +1044,30 @@
             </svg>
           </button>
           <button
-            class="tool"
-            onclick="window.print()"
-            aria-label="Imprimer ou enregistrer en PDF"
-            title="Imprimer / Enregistrer en PDF"
+            class="tool pdf-btn"
+            id="printBtn"
+            type="button"
+            aria-label="Imprimer le CV"
+            title="Imprimer le CV"
           >
-            <svg viewBox="0 0 24 24">
-              <path
-                d="M6 9V3h12v6M6 17H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"
-              />
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 9V3h12v6M6 17H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2" />
               <path d="M6 14h12v7H6z" />
             </svg>
+            <span class="pdf-label">Imprimer</span>
+          </button>
+          <button
+            class="tool pdf-btn"
+            id="previewPdfBtn"
+            type="button"
+            aria-label="Visualiser le CV en PDF dans Chrome"
+            title="Visualiser le CV en PDF dans Chrome"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <path d="M14 2v6h6M8 13h8M8 17h6" />
+            </svg>
+            <span class="pdf-label">Aperçu PDF</span>
           </button>
         </div>
         <div class="mobile-menu" id="mobileMenu" aria-label="Menu mobile">
@@ -1582,6 +1621,73 @@
 
       window.addEventListener("resize", function () {
         if (window.innerWidth > 980) closeMobileMenu();
+      });
+
+      // Impression directe : ouvre la fenêtre d’impression du navigateur.
+      const printBtn = document.getElementById("printBtn");
+      printBtn.addEventListener("click", () => {
+        window.print();
+      });
+
+      // Aperçu PDF : génère un vrai PDF A4 puis l’ouvre dans un nouvel onglet.
+      // Chrome affiche alors son lecteur PDF avec le bouton de téléchargement.
+      const previewPdfBtn = document.getElementById("previewPdfBtn");
+      previewPdfBtn.addEventListener("click", async () => {
+        if (typeof html2pdf === "undefined") {
+          alert("Impossible de générer le PDF : la bibliothèque PDF n’est pas disponible.");
+          return;
+        }
+
+        const target = document.querySelector("main");
+        const originalTitle = document.title;
+        const buttonText = previewPdfBtn.querySelector(".pdf-label");
+        const popup = window.open("about:blank", "_blank");
+
+        if (!popup) {
+          alert("Autorisez les fenêtres pop-up pour visualiser le PDF.");
+          return;
+        }
+
+        buttonText.textContent = "Génération…";
+        previewPdfBtn.disabled = true;
+
+        try {
+          const options = {
+            margin: [9, 9, 9, 9],
+            filename: "CV-Mourad-Boubata.pdf",
+            image: { type: "jpeg", quality: 0.98 },
+            html2canvas: {
+              scale: 2,
+              useCORS: true,
+              backgroundColor: "#ffffff",
+              scrollX: 0,
+              scrollY: 0,
+              windowWidth: document.documentElement.scrollWidth
+            },
+            jsPDF: {
+              unit: "mm",
+              format: "a4",
+              orientation: "portrait",
+              compress: true
+            },
+            pagebreak: { mode: ["css", "legacy"] }
+          };
+
+          const pdfBlob = await html2pdf().set(options).from(target).outputPdf("blob");
+          const pdfUrl = URL.createObjectURL(pdfBlob);
+          popup.location.href = pdfUrl;
+          popup.document.title = originalTitle + " — PDF";
+
+          // Libère l’URL après un délai, le temps que Chrome charge le PDF.
+          setTimeout(() => URL.revokeObjectURL(pdfUrl), 60000);
+        } catch (error) {
+          console.error("Erreur lors de la génération du PDF :", error);
+          popup.close();
+          alert("Une erreur est survenue lors de la génération du PDF.");
+        } finally {
+          buttonText.textContent = "Aperçu PDF";
+          previewPdfBtn.disabled = false;
+        }
       });
 
       const observer = new IntersectionObserver(
