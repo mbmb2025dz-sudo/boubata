@@ -850,6 +850,8 @@
         width: 100%;
         height: 100%;
         overflow: hidden;
+        box-sizing: border-box;
+        transform-origin: top left;
       }
       body.pdf-export-mode #pdfSheet main {
         width: 100%;
@@ -1878,8 +1880,10 @@
           // Ajuste tout le contenu comme un ensemble unique dans la zone utile de la feuille A4.
           // Important : on ne redimensionne pas seulement <main>, ce qui déformait la mise en page
           // et pouvait couper le footer ou créer une page supplémentaire.
-          const availableWidth = sheet.clientWidth - 1;
-          const availableHeight = sheet.clientHeight - 1;
+          // On utilise la zone intérieure réelle (après les marges de 9 mm),
+          // et non la feuille complète : cela évite que le bas du CV soit coupé.
+          const availableWidth = content.clientWidth;
+          const availableHeight = content.clientHeight;
           const naturalWidth = content.scrollWidth;
           const naturalHeight = content.scrollHeight;
           const fitScale = Math.min(
@@ -1898,7 +1902,7 @@
           const options = {
             margin: 0,
             filename: "CV-Mourad-Boubata.pdf",
-            image: { type: "jpeg", quality: 0.98 },
+            image: { type: "png", quality: 1 },
             html2canvas: {
               scale: 2,
               useCORS: true,
